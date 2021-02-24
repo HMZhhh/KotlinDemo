@@ -1,5 +1,6 @@
 package com.sl.android.kotlindemo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         initWidget()
         initBottomNavigationView(bottomNavigationView, navController)
     }
+
 
     private fun initBottomNavigationView(
         bottomNavigationView: BottomNavigationView,

@@ -2,13 +2,16 @@ package com.sl.android.kotlindemo.ui.activity.ui.fragment.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sl.android.kotlindemo.MainActivity
-
+import androidx.databinding.DataBindingUtil
 import com.sl.android.kotlindemo.R
+import com.sl.android.kotlindemo.databinding.FragmentLoginBinding
+import com.sl.android.kotlindemo.viewmodel.LoginModel
 import kotlinx.android.synthetic.main.fragment_login.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,6 +29,7 @@ class LoginFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var loginModel: LoginModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -39,21 +43,39 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+
+        val binding :FragmentLoginBinding = DataBindingUtil.inflate(
+            inflater
+        ,R.layout.fragment_login
+        ,container
+        ,false
+        )
+
+        loginModel = LoginModel("","",context!!)
+        binding.model = loginModel
+        binding.activity=activity
+        return binding.root
+
+//        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_login.setOnClickListener {
-            val intent = Intent(context,MainActivity::class.java)
-            context!!.startActivity(intent)
-        }
+//        btn_login.setOnClickListener {
+//            val intent = Intent(context,MainActivity::class.java)
+//            context!!.startActivity(intent)
+//        }
+//
+//        txt_cancel.setOnClickListener{
+//            activity?.onBackPressed()
+//        }
+        val name = arguments?.getString("name")
 
-        txt_cancel.setOnClickListener{
-            activity?.onBackPressed()
-        }
-        val name = arguments?.getString("name");
+        /*在Kotlin中!!跟?都是用于判断空参数异常的
+        ?.意思是这个参数可以为空,并且程序继续运行下去
+        !!.的意思是这个参数如果为空,就抛出异常*/
+        loginModel.n.set(name!!)
         et_account.setText(name)
     }
 

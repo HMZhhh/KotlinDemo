@@ -2,10 +2,16 @@ package com.sl.android.kotlindemo.viewmodel
 
 import android.content.Context
 import android.content.Intent
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.Toast
+import androidx.databinding.BaseObservable
+import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableField
 import com.sl.android.kotlindemo.MainActivity
 import com.sl.android.kotlindemo.common.BaseConstant
+import com.sl.android.kotlindemo.common.listener.SimpleTextWatcher
 
 /**
  * @author  sunlong
@@ -20,8 +26,6 @@ class LoginModel constructor(name: String, pwd: String, context: Context) {
     val n = ObservableField<String>(name)
     val p = ObservableField<String>(pwd)
 
-
-
     var context: Context = context
 
     /**
@@ -30,10 +34,12 @@ class LoginModel constructor(name: String, pwd: String, context: Context) {
 
     fun onNameChange(s: CharSequence) {
         n.set(s.toString())
+        n.get()
     }
 
     fun onPwdChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         p.set(s.toString())
+
     }
 
     fun login() {
@@ -43,7 +49,30 @@ class LoginModel constructor(name: String, pwd: String, context: Context) {
             Toast.makeText(context,"账号密码正确",Toast.LENGTH_SHORT).show()
             val intent = Intent(context,MainActivity::class.java)
             context.startActivity(intent)
+        }else{
+            Toast.makeText(context,"账号密码错误",Toast.LENGTH_SHORT).show()
         }
     }
+
+    val nameWatcher = object :SimpleTextWatcher(){
+        override fun afterTextChanged(s: Editable?) {
+            super.afterTextChanged(s)
+            n.set(s.toString())
+        }
+    }
+
+    val pwdWatcher  = object : SimpleTextWatcher() {
+        override fun afterTextChanged(s: Editable?) {
+            super.afterTextChanged(s)
+            p.set(s.toString())
+
+        }
+    }
+
+    @BindingAdapter("addTextChangedListener")
+    fun addTextChangedListener(editText: EditText,simpleTextWatcher: SimpleTextWatcher){
+        editText.addTextChangedListener(simpleTextWatcher)
+    }
+
 
 }

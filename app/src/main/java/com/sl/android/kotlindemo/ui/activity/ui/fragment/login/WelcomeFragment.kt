@@ -49,7 +49,7 @@ class WelcomeFragment : Fragment() {
                 }
             }
             val bundle = Bundle()
-            bundle.putString("name","Tony")
+            bundle.putString("name","TeaOf")
             findNavController().navigate(R.id.login,bundle, navOption)
         }
 
